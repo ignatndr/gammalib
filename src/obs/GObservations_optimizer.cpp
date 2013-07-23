@@ -441,6 +441,7 @@ void GObservations::optimizer::eval(const GOptimizerPars& pars)
               << t_elapse << " sec" << std::endl;
     #endif
 
+    logtt.close();
     // Return
     return;
 }

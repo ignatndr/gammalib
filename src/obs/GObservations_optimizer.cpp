@@ -164,7 +164,7 @@ GObservations::optimizer& GObservations::optimizer::operator= (const optimizer& 
     return *this;
 }
 
-
+#include "GLog.hpp"
 /*==========================================================================
  =                                                                         =
  =                               Public methods                            =
@@ -195,6 +195,10 @@ void GObservations::optimizer::eval(const GOptimizerPars& pars)
     clock_t t_start = clock();
     #endif
     #endif
+
+    GLog logtt;
+    logtt.open("GObservations_optimizer.log", true);
+    logtt.date(true);
 
     // Single loop for common exit point
     do {
@@ -230,6 +234,7 @@ void GObservations::optimizer::eval(const GOptimizerPars& pars)
         std::vector<double*>        vect_cpy_value;
         std::vector<double*>        vect_cpy_npred;
 
+        logtt << "gammaspeed:parallel_region_start" << std::endl;
         // Here OpenMP will paralellize the execution. The following code will
         // be executed by the differents threads. In order to avoid protecting
         // attributes ( m_value,m_npred, m_gradient and m_covar), each thread
@@ -362,7 +367,7 @@ void GObservations::optimizer::eval(const GOptimizerPars& pars)
             cpy_covar->stack_destroy();
 
         } // end pragma omp parallel
-
+        logtt << "gammaspeed:parallel_region_end" << std::endl;
         // Now the computation is finished, update attributes.
         // For each omp section, a thread will be created.
         #pragma omp sections

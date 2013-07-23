@@ -697,7 +697,7 @@ void GLog::header(const std::string& arg, int level)
     return;
 }
 
-#include <sys/time.h>
+	#include <sys/time.h>
 /***********************************************************************//**
  * @brief Return current date
  *
@@ -720,7 +720,7 @@ std::string GLog::strdate(void) const
 
     gettimeofday(&currentTime, NULL);
     // Write message type, time and task name to buffer
-    std::sprintf(buffer, "%04d-%02d-%02dT%02d:%02d:%02d.%06ld",
+    std::sprintf(buffer, "%04d-%02d-%02dT%02d:%02d:%02d.%06ld ",
                          timeStruct.tm_year + 1900,
                          timeStruct.tm_mon + 1,
                          timeStruct.tm_mday,

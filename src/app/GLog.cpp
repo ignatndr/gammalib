@@ -697,7 +697,7 @@ void GLog::header(const std::string& arg, int level)
     return;
 }
 
-
+#include <sys/time.h>
 /***********************************************************************//**
  * @brief Return current date
  *
@@ -709,7 +709,7 @@ std::string GLog::strdate(void) const
     struct std::tm timeStruct;
     std::time_t    now;
     char           buffer[100];
-
+    timeval currentTime;
     // Get time
     now = std::time(NULL);
     #ifdef HAVE_GMTIME_R   
@@ -718,14 +718,16 @@ std::string GLog::strdate(void) const
     std::memcpy(&timeStruct, gmtime(&now), sizeof(struct tm));
     #endif
 
+    gettimeofday(&currentTime, NULL);
     // Write message type, time and task name to buffer
-    std::sprintf(buffer, "%04d-%02d-%02dT%02d:%02d:%02d",
+    std::sprintf(buffer, "%04d-%02d-%02dT%02d:%02d:%02d.%06ld",
                          timeStruct.tm_year + 1900,
                          timeStruct.tm_mon + 1,
                          timeStruct.tm_mday,
                          timeStruct.tm_hour,
                          timeStruct.tm_min,
-                         timeStruct.tm_sec);
+                         timeStruct.tm_sec,
+                         currentTime.tv_usec);
 
     // Build string from buffer
     std::string date = buffer;
